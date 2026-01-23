@@ -1,0 +1,104 @@
+Fri Oct  6 23:37:23 2023
+	User-Name = "test@test"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "113356"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Acct-Authentic = RADIUS
+	Acct-Session-Time = 391501
+	Acct-Input-Octets = 686882242
+	Acct-Output-Octets = 4024201667
+	Acct-Input-Gigawords = 1
+	Acct-Output-Gigawords = 15
+	Acct-Output-Packets = 54081775
+	Acct-Input-Packets = 31186985
+	Service-Type = Framed-User
+	Framed-IP-Address = 10.140.10.120
+	Event-Timestamp = "Oct  6 2023 23:37:23 CST"
+	Acct-Unique-Session-Id = "d88515084dfbb5249e4b3d6746e74585"
+	Timestamp = 1696606643
+
+Fri Oct  6 23:37:33 2023
+	User-Name = "test@test"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "113356"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Acct-Authentic = RADIUS
+	Acct-Session-Time = 391501
+	Acct-Input-Octets = 686882242
+	Acct-Output-Octets = 4024201667
+	Acct-Input-Gigawords = 1
+	Acct-Output-Gigawords = 15
+	Acct-Output-Packets = 54081775
+	Acct-Input-Packets = 31186985
+	Service-Type = Framed-User
+	Framed-IP-Address = 10.140.10.120
+	Event-Timestamp = "Oct  6 2023 23:37:33 CST"
+	Acct-Unique-Session-Id = "d88515084dfbb5249e4b3d6746e74585"
+	Timestamp = 1696606653
+
+Fri Oct  6 23:37:33 2023
+	User-Name = "test@test"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "113356"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Acct-Authentic = RADIUS
+	Acct-Session-Time = 391501
+	Acct-Input-Octets = 686882242
+	Acct-Output-Octets = 4024201667
+	Acct-Input-Gigawords = 1
+	Acct-Output-Gigawords = 15
+	Acct-Output-Packets = 54081775
+	Acct-Input-Packets = 31186985
+	Service-Type = Framed-User
+	Framed-IP-Address = 10.140.10.120
+	Event-Timestamp = "Oct  6 2023 23:37:33 CST"
+	Acct-Unique-Session-Id = "d88515084dfbb5249e4b3d6746e74585"
+	Timestamp = 1696606653
+
+Fri Oct  6 23:37:33 2023
+	User-Name = "test@test"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "113356"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Acct-Authentic = RADIUS
+	Acct-Session-Time = 391501
+	Acct-Input-Octets = 686882242
+	Acct-Output-Octets = 4024201667
+	Acct-Input-Gigawords = 1
+	Acct-Output-Gigawords = 15
+	Acct-Output-Packets = 54081775
+	Acct-Input-Packets = 31186985
+	Service-Type = Framed-User
+	Framed-IP-Address = 10.140.10.120
+	Event-Timestamp = "Oct  6 2023 23:37:33 CST"
+	Acct-Unique-Session-Id = "d88515084dfbb5249e4b3d6746e74585"
+	Timestamp = 1696606653
+

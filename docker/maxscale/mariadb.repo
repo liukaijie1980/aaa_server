@@ -1,0 +1,6 @@
+[mariadb]
+name = MariaDB
+baseurl = https://mirrors.aliyun.com/mariadb/yum/10.5/centos8-amd64/
+module_hotfixes=1
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1

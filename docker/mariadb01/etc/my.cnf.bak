@@ -1,0 +1,110 @@
+# For advice on how to change settings please see
+# http://dev.mysql.com/doc/refman/8.0/en/server-configuration-defaults.html
+
+[mariadb]
+#
+# Remove leading # and set to the amount of RAM for the most important data
+# cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+# innodb_buffer_pool_size = 128M
+#
+# Remove the leading "# " to disable binary logging
+# Binary logging captures changes between backups and is enabled by
+# default. It's default setting is log_bin=binlog
+# disable_log_bin
+#
+# Remove leading # to set options mainly useful for reporting servers.
+# The server defaults are faster for transactions and fast SELECTs.
+# Adjust sizes as needed, experiment to find the optimal values.
+# join_buffer_size = 128M
+# sort_buffer_size = 2M
+# read_rnd_buffer_size = 2M
+#
+# Remove leading # to revert to previous value for default_authentication_plugin,
+# this will increase compatibility with older clients. For background, see:
+# https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin
+# default-authentication-plugin=mysql_native_password
+
+default-time-zone = '+8:00'
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+# 设置同步的binary log二进制日志文件名前缀，默认为binlog
+#log-bin=mysql-bin
+
+# 服务器唯一id，默认为1，值范围为1～2^32−1. ；主数据库和从数据库的server-id不能重复
+#server_id=1     
+     
+#开启 GTID
+#gtid_mode=ON
+#enforce_gtid_consistency=ON
+#gtid_strict_mode = ON
+
+###可选配置
+# 需要主从复制的数据库，如多个则重复配置
+#binlog-do-db=radius
+
+# 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步），如多个则重复配置
+#binlog-ignore-db=mysql
+#binlog-ignore-db=information_schema
+#binlog-ignore-db=performance_schema
+#binlog-ignore-db=sys
+
+# 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存
+#binlog_cache_size=1M
+
+# 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）
+binlog_format=row
+
+# 配置二进制日志自动删除/过期时间，单位秒，默认值为2592000，即30天；8.0.3版本之前使用expire_logs_days，单位天数，默认值为0，表示不自动删除。
+#binlog_expire_logs_seconds=2592000
+
+# 开启无损复制，先要在mysql客户端命令行执行：
+#主节点执行：INSTALL PLUGIN rpl_semi_sync_master SONAME 'semisync_master.so';
+#从节点执行：INSTALL PLUGIN rpl_semi_sync_slave SONAME 'semisync_slave.so';
+#rpl_semi_sync_master_enabled=on
+#rpl_semi_sync_slave_enabled=ON
+#rpl_semi_sync_master_wait_point=AFTER_SYNC
+# 等待从节点ACK的时长（不指定默认为10s）
+#rpl_semi_sync_master_timeout=3000
+
+# 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断，默认OFF关闭，可选值有OFF、all、ddl_exist_errors以及错误码列表。8.0.26版本之前使用slave_skip_errors
+
+# 同步执行跳过一些错误码（防止同步写入时出现错误导致复制中断）
+#replica_skip_errors=1062
+
+#重置密码用
+#skip-grant-tables
+#validate_password.policy = low
+#validate_password.length = 6
+
+#用于操作远程表的引擎
+#federated
+
+
+
+#下面是用于双主的设置
+# ------从节点配置-------
+# 开启relay-log日志（同样可以指定前缀名）
+#relay_log=mysql-relay-log
+
+# 开启存储过程、函数、触发器等内容的同步功能
+#log_bin_trust_function_creators=true
+
+# ------自增序列配置-------
+# 设置自增初始值为1
+#auto_increment_offset=1
+# 设置自增步长为2，自增序列为{1、3、5、7、9.....}
+#auto_increment_increment=2
+
+
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_cluster_name="my_galera_cluster"
+wsrep_cluster_address="gcomm://mysql01,mysql02"
+wsrep_node_name="node1"  # 在 node2 上将其更改为 "node2"
+wsrep_node_address="mysql01"  # 在 node2 上将其更改为 "node2_IP"
+wsrep_sst_method=rsync
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+innodb_doublewrite=1

@@ -1,0 +1,117 @@
+# MaxScale documentation:
+# https://mariadb.com/kb/en/mariadb-maxscale-6/
+
+# Global parameters
+#
+# Complete list of configuration options:
+# https://mariadb.com/kb/en/mariadb-maxscale-6-mariadb-maxscale-configuration-guide/
+
+[maxscale]
+threads=auto
+admin_host=0.0.0.0
+admin_secure_gui=false
+debug=enable-statement-logging
+
+# Server definitions
+#
+# Set the address of the server to the network
+# address of a MariaDB server.
+#
+
+[server1]
+type=server
+address=mysql01
+port=3306
+protocol=MariaDBBackend
+
+[server2]
+type=server
+address=mysql02
+port=3306
+protocol=MariaDBBackend
+
+# Monitor for the servers
+#
+# This will keep MaxScale aware of the state of the servers.
+# MariaDB Monitor documentation:
+# https://mariadb.com/kb/en/maxscale-6-monitors/
+#
+# Create the monitor user with:
+#
+#  CREATE USER 'monitor_user'@'%' IDENTIFIED BY 'monitor_pw';
+#  GRANT REPLICATION CLIENT, FILE, SUPER, RELOAD, PROCESS, SHOW DATABASES, EVENT ON *.* TO 'monitor_user'@'%';
+#
+
+[MariaDB-Monitor]
+type=monitor
+module=mariadbmon
+servers=server1,server2
+user=monitor_user
+password=123456
+monitor_interval=2s
+auto_failover=true  
+auto_rejoin=true
+
+# Service definitions
+#
+# Service Definition for a read-only service and
+# a read/write splitting service.
+#
+# Create the service user with:
+#
+#  CREATE USER 'service_user'@'%' IDENTIFIED BY 'service_pw';
+#  GRANT SELECT ON mysql.user TO 'service_user'@'%';
+#  GRANT SELECT ON mysql.db TO 'service_user'@'%';
+#  GRANT SELECT ON mysql.tables_priv TO 'service_user'@'%';
+#  GRANT SELECT ON mysql.columns_priv TO 'service_user'@'%';
+#  GRANT SELECT ON mysql.procs_priv TO 'service_user'@'%';
+#  GRANT SELECT ON mysql.proxies_priv TO 'service_user'@'%';
+#  GRANT SELECT ON mysql.roles_mapping TO 'service_user'@'%';
+#  GRANT SHOW DATABASES ON *.* TO 'service_user'@'%';
+#
+
+# ReadConnRoute documentation:
+# https://mariadb.com/kb/en/mariadb-maxscale-6-readconnroute/
+
+#[Read-Only-Service]
+#type=service
+#router=readconnroute
+#servers=server1,server2
+#user=root
+#password=123456
+#router_options=slave
+
+# ReadWriteSplit documentation:
+# https://mariadb.com/kb/en/mariadb-maxscale-6-readwritesplit/
+
+[Read-Write-Service]
+type=service
+router=readwritesplit
+servers=server1,server2
+user=service_user
+password='123456'
+
+# 默认禁止root用户访问，设置为1开启
+enable_root_user=true 
+
+#默认master不参与读，设置true允许读
+master_accept_reads=true
+
+# Listener definitions for the services
+#
+# These listeners represent the ports the
+# services will listen on.
+#
+
+#[Read-Only-Listener]
+#type=listener
+#service=Read-Only-Service
+#protocol=MariaDBClient
+#port=3306
+
+[Read-Write-Listener]
+type=listener
+service=Read-Write-Service
+protocol=mariadbprotocol
+port=3306
+

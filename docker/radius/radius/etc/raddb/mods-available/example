@@ -1,0 +1,6 @@
+example {
+    integer = 0x10
+    boolean = true
+    string  = "liukaijie"
+    ipaddr  = "127.0.0.1"
+}

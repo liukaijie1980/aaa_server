@@ -1,0 +1,164 @@
+# ============================================
+# 操作系统相关文件
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+# 理由：这些是操作系统自动生成的隐藏文件，不应纳入版本控制
+
+# ============================================
+# IDE 和编辑器配置文件
+# ============================================
+.idea/
+.vscode/
+.vs/
+*.swp
+*.swo
+*~
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+# 理由：IDE 配置文件是个人偏好设置，不同开发者使用不同 IDE，不应共享
+
+# ============================================
+# 前端项目 (Vue.js/Node.js)
+# ============================================
+# Node.js 依赖
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+# 理由：node_modules 可以通过 package.json 重新安装，体积大且变化频繁
+
+# 构建产物
+frontend/dist/
+frontend/build/
+*.local
+# 理由：构建产物可以通过源码重新生成，不应纳入版本控制
+
+# 前端测试覆盖率
+frontend/tests/**/coverage/
+frontend/tests/e2e/reports
+frontend/selenium-debug.log
+# 理由：测试覆盖率报告是自动生成的，每次运行都会变化
+
+# 包管理器锁定文件（可选，根据团队约定）
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+# 理由：锁定文件可以确保依赖版本一致性，但有些团队选择忽略以允许自动更新
+
+# ============================================
+# 后端项目 (Java/Maven)
+# ============================================
+# Maven 构建产物
+radiusApi/target/
+radiusApi/**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+# 理由：编译后的 class 文件和打包产物可以通过源码重新构建
+
+# Maven 包装器（保留 wrapper jar，但忽略其他）
+# .mvn/wrapper/maven-wrapper.jar 已通过 ! 规则保留
+# 理由：Maven wrapper jar 是必需的，但其他构建文件不需要
+
+# Java 日志文件
+radiusApi/logs/
+*.log
+# 理由：日志文件是运行时生成的，不应纳入版本控制
+
+# ============================================
+# 数据库相关
+# ============================================
+# 数据库备份文件
+*.sql.bak
+*.sql.backup
+backup_data.sql
+database.rar
+*.rar
+*.zip
+# 理由：数据库备份文件通常很大，且包含敏感数据，不应纳入版本控制
+# 注意：如果 struct.sql 是数据库结构定义文件，应该保留（已通过显式添加）
+
+# 数据库数据目录
+docker/mariadb01/data/
+docker/mariadb02/data/
+# 理由：数据库数据目录包含实际数据，体积大且不应纳入版本控制
+
+# ============================================
+# Docker 相关
+# ============================================
+# Docker 构建缓存（如果需要）
+# .dockerignore 应该单独配置
+# 理由：Docker 构建缓存由 Docker 管理，不需要版本控制
+
+# JDK 安装包（体积大，构建时自动下载）
+docker/java/jdk-*.rpm
+docker/java/*.rpm
+# 理由：JDK RPM 文件体积很大（通常几百MB），不应纳入版本控制，Dockerfile 会自动下载安装
+
+# ============================================
+# 环境变量和配置文件
+# ============================================
+.env
+.env.local
+.env.*.local
+frontend/.env.development.local
+frontend/.env.production.local
+frontend/.env.staging.local
+# 理由：环境变量文件通常包含敏感信息（API 密钥、密码等），不应纳入版本控制
+# 注意：.env.example 或 .env.template 应该保留作为模板
+
+# ============================================
+# 临时文件和缓存
+# ============================================
+*.tmp
+*.temp
+*.cache
+.cache/
+tmp/
+temp/
+# 理由：临时文件是自动生成的，不需要版本控制
+
+# ============================================
+# 其他
+# ============================================
+# 压缩文件（除非是必需的资源）
+*.7z
+*.tar
+*.gz
+# 理由：压缩文件通常可以通过源码重新生成，或应该使用 Git LFS
+
+# 系统文件
+*.pid
+*.seed
+*.pid.lock
+# 理由：进程 ID 文件是运行时生成的
+
+# 覆盖率报告
+coverage/
+.nyc_output/
+# 理由：代码覆盖率报告是自动生成的

@@ -1,0 +1,64 @@
+Mon Aug 21 22:38:54 2023
+	User-Name = "4730001@kdlk"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "3444"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Event-Timestamp = "Aug 21 2023 22:38:54 CST"
+	Acct-Unique-Session-Id = "a604c54b315023a721ffcba3354cf383"
+	Timestamp = 1692628734
+
+Mon Aug 21 22:51:01 2023
+	User-Name = "4730001@kdlk"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "3444"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Event-Timestamp = "Aug 21 2023 22:51:01 CST"
+	Acct-Unique-Session-Id = "a604c54b315023a721ffcba3354cf383"
+	Timestamp = 1692629461
+
+Mon Aug 21 22:51:03 2023
+	User-Name = "4730001@kdlk"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "3444"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Event-Timestamp = "Aug 21 2023 22:51:03 CST"
+	Acct-Unique-Session-Id = "a604c54b315023a721ffcba3354cf383"
+	Timestamp = 1692629463
+
+Mon Aug 21 22:52:50 2023
+	User-Name = "4730001@kdlk"
+	Acct-Status-Type = Start
+	Acct-Session-Id = "3444"
+	NAS-Identifier = "NMHH-ME60-1"
+	NAS-IP-Address = 10.11.31.1
+	Calling-Station-Id = "a3:33:33:33:33:33"
+	Attr-26 = 0x32303131
+	NAS-Port = 18909075
+	NAS-Port-Type = Ethernet
+	NAS-Port-Id = "slot=1;subslot=2;port=8;vlanid=1939;vlanid2=68;"
+	Connect-Info = "1000000000"
+	Event-Timestamp = "Aug 21 2023 22:52:50 CST"
+	Acct-Unique-Session-Id = "a604c54b315023a721ffcba3354cf383"
+	Timestamp = 1692629570
+

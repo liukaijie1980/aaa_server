@@ -1,0 +1,165 @@
+#to run this script:
+#docker stack deploy -c 本脚本的文件名    集群名
+#docker stack deploy -c docker-swarm.yml myradius
+
+version: '3.9'
+
+services: 
+ mysql01:
+      image: www.netgears.cn:4999/mariadb:ok
+      volumes:
+        - /home/mariadb01/data:/var/lib/mysql
+        - /home/mariadb01/etc/my.cnf:/etc/mysql/my.cnf
+      ports:
+        - "33061:3306"
+      environment:
+        MARIADB_ROOT_PASSWORD: 123456
+      deploy:
+        replicas: 1
+        placement:
+           constraints:
+           - node.hostname == swarm01
+      networks:
+         - my_network
+
+ mysql02:
+      image: www.netgears.cn:4999/mariadb:ok
+      volumes:
+        - /home/mariadb02/data:/var/lib/mysql
+        - /home/mariadb02/etc/my.cnf:/etc/mysql/my.cnf
+      ports:
+        - "33062:3306"
+      environment:
+        MARIADB_ROOT_PASSWORD: 123456
+      deploy:
+        replicas: 1
+        placement:
+           constraints:
+           - node.hostname == swarm02
+
+      networks:
+         - my_network
+
+ mysql:
+      depends_on:
+        - mysql01
+        - mysql02
+
+      image: www.netgears.cn:4999/maxscale:ok
+      ports:
+        -  3306:3306
+        -  8989:8989
+      volumes:
+        - /home/maxscale/etc/maxscale.cnf:/etc/maxscale.cnf
+      healthcheck:
+        test:  "netstat -antp|grep 3306"
+        interval:  "30s"
+        timeout:  "3s"
+        retries: 1
+      deploy:
+        #replicas: 1
+        mode: global
+      networks:
+         - my_network
+
+
+ backend: 
+      depends_on:
+        - mysql
+      image: www.netgears.cn:4999/java:ok
+      volumes: 
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        - /usr/app/:/usr/app
+      ports: 
+        - "8088:8088"
+      deploy:
+        #replicas: 2
+        mode: global
+      networks:
+         - my_network
+
+ api:
+      depends_on:
+        - mysql
+      image: www.netgears.cn:4999/java:ok
+      volumes:
+        - /usr/app/api:/usr/app
+      ports:
+        - "10368:8088"
+      deploy:
+        #replicas: 2
+        mode: global
+      networks:
+         - my_network
+
+ frontend: 
+      depends_on:
+       - backend
+      image: www.netgears.cn:4999/nginx:ok
+      volumes: 
+      - /usr/app/:/usr/app
+      ports:
+      - "80:80"
+      #command:
+      #- "nginx"
+      #environment:
+       # name: NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE
+       # value: "true"
+      #- /usr/sbin/nginx
+      #healthcheck: 
+      #  test:  "netstat -antp|grep 80"
+      #  interval:  "10s"
+      #  timeout:  "3s"
+      #  retries: 1
+      deploy:
+        #replicas: 2 
+        mode: global
+      networks:
+         - my_network
+
+ radius:
+      depends_on:
+       - mysql
+      image: www.netgears.cn:4999/radius:ok
+      volumes:
+       - /home/radius/radius:/home/radius/radius
+      network_mode: host  
+      ports: 
+      # - "1812-1813:1812-1813/udp" 
+       - target: 1812
+         published: 1812
+         protocol: udp
+         mode: host  # 关键！直接绑定宿主机端口
+       - target: 1813
+         published: 1813
+         protocol: udp
+         mode: host
+    #  healthcheck: 
+    #    test:  "netstat -anup|grep 1812"
+    #    interval:  "30s"
+    #    timeout:  "3s"
+    #    retries: 1
+      deploy:
+        #replicas: 2
+        mode: global
+      networks:
+         - my_network
+
+ portainer:
+    image: www.netgears.cn:4999/portainer/portainer:ok
+    ports:
+      - "0.0.0.0:9000:9000"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+        - my_network
+
+networks:
+  my_network:
+    driver: overlay
+    attachable: true  # 必须允许容器附加[1,5](@ref)
