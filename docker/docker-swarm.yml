@@ -8,8 +8,8 @@ services:
  mysql01:
       image: www.netgears.cn:4999/mariadb:ok
       volumes:
-        - /home/mariadb01/data:/var/lib/mysql
-        - /home/mariadb01/etc/my.cnf:/etc/mysql/my.cnf
+        - ./mariadb01/data:/var/lib/mysql
+        - ./mariadb01/etc/my.cnf:/etc/mysql/my.cnf
       ports:
         - "33061:3306"
       environment:
@@ -25,8 +25,8 @@ services:
  mysql02:
       image: www.netgears.cn:4999/mariadb:ok
       volumes:
-        - /home/mariadb02/data:/var/lib/mysql
-        - /home/mariadb02/etc/my.cnf:/etc/mysql/my.cnf
+        - ./mariadb02/data:/var/lib/mysql
+        - ./mariadb02/etc/my.cnf:/etc/mysql/my.cnf
       ports:
         - "33062:3306"
       environment:
@@ -50,7 +50,7 @@ services:
         -  3306:3306
         -  8989:8989
       volumes:
-        - /home/maxscale/etc/maxscale.cnf:/etc/maxscale.cnf
+        - ./maxscale/etc/maxscale.cnf:/etc/maxscale.cnf
       healthcheck:
         test:  "netstat -antp|grep 3306"
         interval:  "30s"
@@ -68,8 +68,9 @@ services:
         - mysql
       image: www.netgears.cn:4999/java:ok
       volumes: 
+      #用于访问系统的docker服务
         - "/var/run/docker.sock:/var/run/docker.sock"
-        - /usr/app/:/usr/app
+        - ./java/app:/usr/app
       ports: 
         - "8088:8088"
       deploy:
@@ -83,7 +84,7 @@ services:
         - mysql
       image: www.netgears.cn:4999/java:ok
       volumes:
-        - /usr/app/api:/usr/app
+        - ./java/api:/usr/app
       ports:
         - "10368:8088"
       deploy:
@@ -97,20 +98,10 @@ services:
        - backend
       image: www.netgears.cn:4999/nginx:ok
       volumes: 
-      - /usr/app/:/usr/app
+      - ./nginx/app:/usr/app
       ports:
       - "80:80"
-      #command:
-      #- "nginx"
-      #environment:
-       # name: NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE
-       # value: "true"
-      #- /usr/sbin/nginx
-      #healthcheck: 
-      #  test:  "netstat -antp|grep 80"
-      #  interval:  "10s"
-      #  timeout:  "3s"
-      #  retries: 1
+   
       deploy:
         #replicas: 2 
         mode: global
@@ -122,7 +113,7 @@ services:
        - mysql
       image: www.netgears.cn:4999/radius:ok
       volumes:
-       - /home/radius/radius:/home/radius/radius
+       - ./radius/radius:/home/radius/radius
       network_mode: host  
       ports: 
       # - "1812-1813:1812-1813/udp" 

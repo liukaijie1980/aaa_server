@@ -87,6 +87,7 @@ replay_pid*
 
 # Java 日志文件
 radiusApi/logs/
+#radiusApi/target/
 *.log
 # 理由：日志文件是运行时生成的，不应纳入版本控制
 
@@ -119,6 +120,9 @@ docker/mariadb02/data/
 docker/java/jdk-*.rpm
 docker/java/*.rpm
 # 理由：JDK RPM 文件体积很大（通常几百MB），不应纳入版本控制，Dockerfile 会自动下载安装
+docker/nginx/app/
+docker/java/app/
+docker/java/api/
 
 # ============================================
 # 环境变量和配置文件
@@ -142,6 +146,12 @@ frontend/.env.staging.local
 tmp/
 temp/
 # 理由：临时文件是自动生成的，不需要版本控制
+
+# ============================================
+# 本地工具缓存（脚本自动下载）
+# ============================================
+.tools/
+# 理由：build-backend.ps1 会下载并解压 JDK 到 .tools，体积大且可重复生成
 
 # ============================================
 # 其他

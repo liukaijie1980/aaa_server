@@ -5,10 +5,10 @@ version: '3'
 
 services: 
  mysql:
-      image: mariadb 
+      image: www.netgears.cn:4999/mariadb:ok
       volumes: 
-        - /home/mariadb01/data:/var/lib/mysql
-        - /home/mariadb01/etc/my.cnf:/etc/mysql/my.cnf
+        - ./mariadb01/data:/var/lib/mysql
+        - ./mariadb01/etc/my.cnf:/etc/mysql/my.cnf
       ports: 
         - "3306:3306"
 
@@ -29,7 +29,7 @@ services:
       image: www.netgears.cn:4999/java:ok
       volumes: 
         - "/var/run/docker.sock:/var/run/docker.sock"
-        - /usr/app/:/usr/app
+        - ./java/app:/usr/app
       ports: 
         - "8088:8088"
       expose:
@@ -41,7 +41,7 @@ services:
         - mysql
       image: www.netgears.cn:4999/java:ok
       volumes:
-        - /usr/app/api:/usr/app
+        - ./java/api:/usr/app
       ports:
         - "10368:8088"
       restart: always
@@ -51,7 +51,7 @@ services:
        - backend
       image: www.netgears.cn:4999/nginx:ok
       volumes: 
-      - /usr/app/:/usr/app
+      - ./nginx/app:/usr/app
       ports:
       - "80:80"
       restart: always
@@ -61,9 +61,10 @@ services:
        - mysql
       image: www.netgears.cn:4999/radius:ok
       volumes:
-        - /home/radius/radius:/home/radius/radius
+        - ./radius/radius:/home/radius/radius
       ports: 
        - "1812-1813:1812-1813/udp" 
+      network_mode: host  
       healthcheck: 
         test:  "netstat -anup|grep 1812"
         interval:  "30s"
