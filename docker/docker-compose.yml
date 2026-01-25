@@ -51,7 +51,8 @@ services:
        - backend
       image: www.netgears.cn:4999/nginx:ok
       volumes: 
-      - ./nginx/app:/usr/share/nginx/html
+      - ./nginx/app:/usr/app/dist
+        ./nginx/nginx.conf:/etc/nginx/nginx.conf
       ports:
       - "80:80"
       restart: always
