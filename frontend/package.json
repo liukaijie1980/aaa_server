@@ -4,9 +4,9 @@
   "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "scripts": {
-    "dev": "node --openssl-legacy-provider ./node_modules/.bin/vue-cli-service serve",
+    "dev": "node scripts/build.js serve",
     "lint": "eslint --ext .js,.vue src",
-    "build:prod": "node --openssl-legacy-provider ./node_modules/.bin/vue-cli-service build",
+    "build:prod": "node scripts/build.js build",
     "build:stage": "vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
     "new": "plop",
@@ -84,8 +84,8 @@
     "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
   },
   "engines": {
-    "node": ">=8.9",
-    "npm": ">= 3.0.0"
+    "node": ">=14.0.0 <17.0.0 || >=16.0.0 <18.0.0",
+    "npm": ">= 6.0.0"
   },
   "keywords": [
     "vue",
