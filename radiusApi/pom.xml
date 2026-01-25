@@ -161,10 +161,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <!-- 将可执行 jar 直接输出到 docker/java/app 供容器挂载使用 -->
-                    <outputDirectory>${project.basedir}/../docker/java/app</outputDirectory>
-                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>pl.project13.maven</groupId>
