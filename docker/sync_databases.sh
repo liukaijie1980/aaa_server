@@ -55,6 +55,6 @@ if [ $? -eq 0 ]; then
      
 else
      echo "Connection to $TARGET_IP1:$TARGET_PORT1 failed." 
-     rm -rf /home/mariadb02/data/*
-     scp -r root@swarm01:/home/mariadb01/data/* /home/mariadb02/data/
+     rm -rf ./mariadb02/data/*
+     scp -r root@swarm01:"$PWD/mariadb01/data/*" ./mariadb02/data/
 fi
