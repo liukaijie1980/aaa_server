@@ -1,7 +1,7 @@
 #to run this scrpit：
 #docker compose up -d 
 
-version: '3'
+
 
 services: 
  mysql:
@@ -63,8 +63,8 @@ services:
       image: www.netgears.cn:4999/radius:ok
       volumes:
         - ./radius/radius:/home/radius/radius
-      ports: 
-       - "1812-1813:1812-1813/udp" 
+      #ports: 
+      # - "1812-1813:1812-1813/udp" 
       network_mode: host  
       healthcheck: 
         test:  "netstat -anup|grep 1812"
