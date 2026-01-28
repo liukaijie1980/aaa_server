@@ -1,0 +1,18 @@
+{
+  "oracle": {
+    "host": "oracle-host",
+    "port": 1521,
+    "service_name": "ORCL",
+    "user": "portal",
+    "password": "your-oracle-password",
+    "table": "USERST"
+  },
+  "mysql": {
+    "host": "localhost",
+    "port": 3306,
+    "database": "radius",
+    "user": "service_user",
+    "password": "your-mysql-password",
+    "charset": "utf8mb4"
+  }
+}

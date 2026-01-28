@@ -1,9 +1,10 @@
 # Cursor 忽略文件 - 排除已完成的模块以降低上下文消耗
 
 # 排除输出文件
+
 docker/nginx/app/
-#docker/java/app/
-#docker/java/api/
+docker/java/app/
+docker/java/api/
 # 排除虚拟环境
 **/venv/
 **/__pycache__/
