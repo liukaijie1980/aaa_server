@@ -137,7 +137,7 @@ function ensure_jdk() {
 
   local uri="https://api.adoptium.net/v3/binary/latest/$DOWNLOAD_JAVA_MAJOR/ga/linux/$arch/jdk/hotspot/normal/eclipse?project=jdk"
 
-  echo "Downloading JDK $DOWNLOAD_JAVA_MAJOR from Adoptium..."
+  echo "Downloading JDK $DOWNLOAD_JAVA_MAJOR from Adoptium..." >&2
   if command -v curl >/dev/null 2>&1; then
     curl -L -o "$tar_path" "$uri"
   elif command -v wget >/dev/null 2>&1; then
@@ -152,7 +152,7 @@ function ensure_jdk() {
   fi
   mkdir -p "$install_root"
 
-  echo "Extracting to $install_root ..."
+  echo "Extracting to $install_root ..." >&2
   # Extract without strip-components first to see the structure
   tar -xzf "$tar_path" -C "$install_root"
 
@@ -312,7 +312,8 @@ EOF
 # Main execution
 main() {
   local java_home
-  java_home=$(ensure_jdk)
+  # ensure_jdk echoes progress to stderr; only the final path goes to stdout (take last line as safeguard)
+  java_home=$(ensure_jdk | tail -n 1 | xargs)
   set_java_env "$java_home"
   echo "JAVA_HOME=$java_home"
   build_backend
