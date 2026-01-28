@@ -153,22 +153,38 @@ function ensure_jdk() {
   mkdir -p "$install_root"
 
   echo "Extracting to $install_root ..."
-  tar -xzf "$tar_path" -C "$install_root" --strip-components=1
+  # Extract without strip-components first to see the structure
+  tar -xzf "$tar_path" -C "$install_root"
 
+  # Find the JDK directory - it should contain bin/java
   local jdk_home
-  jdk_home=$(find "$install_root" -mindepth 1 -maxdepth 1 -type d | head -n 1)
+  jdk_home=$(find "$install_root" -type f -name "java" -path "*/bin/java" | head -n 1)
+  
   if [ -z "$jdk_home" ]; then
-    # If strip-components worked, install_root is the jdk_home
+    # Try alternative: look for directories that might be JDK root
+    jdk_home=$(find "$install_root" -mindepth 1 -maxdepth 3 -type d -name "jdk*" | head -n 1)
+    if [ -n "$jdk_home" ] && [ ! -f "$jdk_home/bin/java" ]; then
+      jdk_home=""
+    fi
+  else
+    # Extract the directory path (remove /bin/java)
+    jdk_home=$(dirname "$(dirname "$jdk_home")")
+  fi
+
+  # If still not found, check if install_root itself contains bin/java
+  if [ -z "$jdk_home" ] || [ ! -f "$jdk_home/bin/java" ]; then
     if [ -f "$install_root/bin/java" ]; then
       jdk_home="$install_root"
     else
-      echo "ERROR: JDK extract failed: no extracted directory found." >&2
+      echo "ERROR: JDK extract failed: bin/java not found." >&2
+      echo "DEBUG: Contents of $install_root:" >&2
+      ls -la "$install_root" >&2 || true
       exit 1
     fi
   fi
 
   if [ ! -f "$jdk_home/bin/java" ]; then
-    echo "ERROR: JDK extract failed: bin/java not found." >&2
+    echo "ERROR: JDK extract failed: bin/java not found in $jdk_home." >&2
     exit 1
   fi
 
