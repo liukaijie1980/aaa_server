@@ -4,7 +4,7 @@ set -euo pipefail
 # Normalize script root path
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REQUIRED_JAVA_MAJOR=18
-DOWNLOAD_JAVA_MAJOR=21
+DOWNLOAD_JAVA_MAJOR=18
 
 function normalize_env_path_value() {
   local value="$1"
