@@ -8,6 +8,7 @@ import com.example.radiusapi.entity.AccountInfo;
 import com.example.radiusapi.mapper.AccountInfoMapper;
 
 import com.example.radiusapi.utils.Result;
+import com.example.radiusapi.utils.TokenUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,15 @@ public class AccountInfoController {
 
     @Operation(summary = "add an Account ")
     @PostMapping("/AccountInfo")
-    public Result AddAccount( @RequestBody AccountInfo account )
+    public Result AddAccount( @RequestBody AccountInfo account, @RequestHeader(value = "x-token", required = false) String token )
     {
         log.info("AddAccount({})",account);
+        if (token != null && !token.isEmpty()) {
+            String adminName = TokenUtil.getNamebyToken(token);
+            if (adminName != null && !adminName.isEmpty()) {
+                account.setAdminName(adminName);
+            }
+        }
 
         Result ret=new Result();
         int i=0;
@@ -84,9 +91,16 @@ public class AccountInfoController {
 
     @Operation(summary = "Update Account infomation ，this api can't use for modify user_name and realm")
     @PutMapping("/AccountInfo")
-    public Result UpdateAccount(@RequestBody AccountInfo account)
+    public Result UpdateAccount(@RequestBody AccountInfo account, @RequestHeader(value = "x-token", required = false) String token)
     {
         log.info("UpdateAccount({})",account);
+        if (token != null && !token.isEmpty()) {
+            String adminName = TokenUtil.getNamebyToken(token);
+            if (adminName != null && !adminName.isEmpty()) {
+                account.setAdminName(adminName);
+            }
+        }
+
         Result ret=new Result();
         UpdateWrapper<AccountInfo> wrapper= new UpdateWrapper<>();
         //我们约定新的account 不能修改UserName和Realm，否则本函数需要额外传入这两个参数作为匹配条件。

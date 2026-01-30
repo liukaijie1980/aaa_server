@@ -6,6 +6,7 @@ import com.example.radiusapi.mapper.AccountToNodeMapper;
 import com.example.radiusapi.mapper.SidebarTreeMapper;
 
 import com.example.radiusapi.utils.Result;
+import com.example.radiusapi.utils.TokenUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -146,8 +147,14 @@ private List<SidebarTree> getAllSubNodes(List<SidebarTree> menuList, String id) 
 @Operation(summary ="set SidebarTree")
 @PostMapping("/SidebarTree")
 @Transactional // 如果任何操作失败，回滚事务
-public Result setTreeNodeList(@RequestBody List<SidebarTree> trlist) {
+public Result setTreeNodeList(@RequestBody List<SidebarTree> trlist, @RequestHeader(value = "x-token", required = false) String token) {
     try {
+        // owner 由 token 解析出的当前用户统一设置，降低对前端传参的依赖
+        String ownerFromToken = null;
+        if (token != null && !token.isEmpty()) {
+            ownerFromToken = TokenUtil.getNamebyToken(token);
+        }
+
         // 从数据库检索所有现有记录
         List<SidebarTree> existingRecords = treeNodeMapper.selectList(null);
 
@@ -159,12 +166,15 @@ public Result setTreeNodeList(@RequestBody List<SidebarTree> trlist) {
 
         // 更新或添加来自前端的每个节点
         for (SidebarTree frontendNode : trlist) {
+            if (ownerFromToken != null && !ownerFromToken.isEmpty()) {
+                frontendNode.setOwner(ownerFromToken);
+            }
             SidebarTree dbNode = treeNodeMapper.selectById(frontendNode.getId());
             if (dbNode == null) {
                 // 如果节点在数据库中不存在，添加它
                 treeNodeMapper.insert(frontendNode);
             } else {
-                // 节点存在，更新它
+                // 节点存在，更新它（owner 以 token 为准）
                 dbNode.setLabel(frontendNode.getLabel());
                 dbNode.setType(frontendNode.getType());
                 dbNode.setOwner(frontendNode.getOwner());
