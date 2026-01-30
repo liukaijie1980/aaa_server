@@ -47,6 +47,8 @@ def load_config(config_path=None):
             "service_name": "ORACLE_SERVICE_NAME",
             "user": "ORACLE_USER",
             "password": "ORACLE_PASSWORD",
+            "thick_mode": "ORACLE_THICK_MODE",
+            "lib_dir": "ORACLE_LIB_DIR",
         },
         "mysql": {
             "host": "MYSQL_HOST",
@@ -64,8 +66,14 @@ def load_config(config_path=None):
             if val is not None:
                 if key == "port":
                     cfg[db][key] = int(val)
+                elif key == "thick_mode":
+                    cfg[db][key] = str(val).lower() in ("1", "true", "yes")
                 else:
                     cfg[db][key] = val
+    # 兼容配置文件中 thick_mode 为布尔或字符串
+    oc = cfg.get("oracle") or {}
+    if "thick_mode" in oc and isinstance(oc["thick_mode"], str):
+        oc["thick_mode"] = oc["thick_mode"].lower() in ("1", "true", "yes")
     return cfg
 
 
@@ -113,6 +121,8 @@ def row_to_account_info(row, col_index):
     r = row
     user_name = _safe_str(r[idx("REVEAL_USERNAME")])
     realm = _safe_str(r[idx("AGENT_CODE")])
+    if realm:
+        realm = "@" + realm
     # (user_name, realm) 唯一键，缺省用空串
     pw = _safe_str(r[idx("PASSWD")])
     create_date = _safe_datetime(r[idx("CREATE_DATE")])
@@ -183,11 +193,29 @@ def run_migration(config_path=None):
         oracle_table,
     )
 
+    # 若 Oracle 版本较旧（如 11g），thin 模式不支持，需启用 thick 模式并安装 Oracle Instant Client
+    use_thick = oc.get("thick_mode") in (True, "true", "1", "yes") or os.environ.get("ORACLE_THICK_MODE", "").lower() in ("1", "true", "yes")
+    lib_dir = oc.get("lib_dir") or os.environ.get("ORACLE_LIB_DIR") or None
+    if use_thick:
+        try:
+            oracledb.init_oracle_client(lib_dir=lib_dir)
+        except Exception as e:
+            print("Oracle thick 模式初始化失败（需安装 Oracle Instant Client）: {}".format(e), file=sys.stderr)
+            if lib_dir:
+                print("当前 lib_dir: {}".format(lib_dir), file=sys.stderr)
+            return 1
+
     try:
-        conn_o = oracledb.connect(user=oracle_user, password=oracle_password, dsn=dsn, encoding="UTF-8")
+        conn_o = oracledb.connect(user=oracle_user, password=oracle_password, dsn=dsn)
         conn_o.cursor().execute("SELECT 1 FROM DUAL")
     except Exception as e:
         print("Oracle 连接或连通性检查失败: {}".format(e), file=sys.stderr)
+        print("当前 Oracle DSN: {} (user={})".format(dsn, oracle_user), file=sys.stderr)
+        err_str = str(e).upper()
+        if "DPY-3010" in err_str or "NOT SUPPORTED" in err_str:
+            print("若 Oracle 为 11g 等较旧版本，请启用 thick 模式：migrate.json 中 oracle 增加 \"thick_mode\": true，并安装 Oracle Instant Client；可选设置 \"lib_dir\": \"/path/to/instantclient\"。", file=sys.stderr)
+        else:
+            print("请检查: 1) migrate.json 中 oracle.host / port / service_name 是否正确  2) Oracle 监听是否已启动  3) 本机到 Oracle 网络是否可达（如 ping、telnet <host> <port>）", file=sys.stderr)
         return 1
     try:
         conn_m = pymysql.connect(

@@ -20,7 +20,7 @@ pip3 install -r requirements.txt
 # 或：python3 -m pip install -r requirements.txt
 ```
 
-**注意**：`oracledb` 使用 thin 模式，无需安装 Oracle Instant Client，可直接在 Linux 上运行。
+**注意**：默认使用 **thin 模式**（无需 Oracle Instant Client）。若 Oracle 为 **11g 等较旧版本**，会报 DPY-3010，需启用 **thick 模式**：在 `migrate.json` 的 `oracle` 中增加 `"thick_mode": true`，并在本机安装 [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client/downloads.html)，可选设置 `"lib_dir": "/path/to/instantclient"`（不设则从系统路径查找）。
 
 ## 配置
 
@@ -33,10 +33,18 @@ pip3 install -r requirements.txt
 
 2. 或使用环境变量（会覆盖 `migrate.json` 中的同名字段）：
 
-   - Oracle：`ORACLE_HOST`、`ORACLE_PORT`、`ORACLE_SERVICE_NAME`、`ORACLE_USER`、`ORACLE_PASSWORD`
+   - Oracle：`ORACLE_HOST`、`ORACLE_PORT`、`ORACLE_SERVICE_NAME`、`ORACLE_USER`、`ORACLE_PASSWORD`、`ORACLE_THICK_MODE`、`ORACLE_LIB_DIR`
    - MySQL：`MYSQL_HOST`、`MYSQL_PORT`、`MYSQL_DATABASE`、`MYSQL_USER`、`MYSQL_PASSWORD`
 
 3. Oracle 表名：若带 schema，在 `migrate.json` 的 `oracle.table` 中填写，例如 `"PORTAL.USERST"`，默认为 `"USERST"`。
+
+4. **Oracle 11g 等旧版本**：在 `oracle` 中设置 `"thick_mode": true`，并安装 Oracle Instant Client；若不在系统路径，设置 `"lib_dir": "/path/to/instantclient"`。
+
+实际上，必须从
+https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
+下载oracle-instantclient-basic-21.21.0.0.0-1.x86_64.rpm
+然后安装rpm -ivh oracle-instantclient*-basic-*.rpm
+安装完成后，文件通常会被放置在/usr/lib/oracle/<版本号>/client64/,本例是/usr/lib/oracle/21/client64/lib
 
 ## 运行
 
@@ -67,7 +75,7 @@ python3 migrate_userst_to_account_info.py --config /path/to/migrate.json
 ## 行为说明
 
 - 按 `(user_name, realm)` 唯一键写入；若目标库中已存在相同 `(user_name, realm)`，则**更新**该行其余字段（不改 `id`、`user_name`、`realm`）。
-- 列对应关系：`REVEAL_USERNAME`→user_name，`AGENT_CODE`→realm，`PASSWD`→user_password，`CREATE_DATE`→valid_date，`LIMIT_DATE`→expire_date，`INPUT_SPEED_LIMIT`→inbound_car，`OUTPUT_SPEED_LIMIT`→outbound_car；其余字段按约定默认或从 USERST 其它列映射（见计划文档）。
+- 列对应关系：`REVEAL_USERNAME`→user_name，`AGENT_CODE`→realm（内容前加 `@`，如 QH→@QH），`PASSWD`→user_password，`CREATE_DATE`→valid_date，`LIMIT_DATE`→expire_date，`INPUT_SPEED_LIMIT`→inbound_car，`OUTPUT_SPEED_LIMIT`→outbound_car；其余字段按约定默认或从 USERST 其它列映射（见计划文档）。
 
 ## 部署（Linux）
 

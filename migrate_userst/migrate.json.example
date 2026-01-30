@@ -1,11 +1,13 @@
 {
   "oracle": {
-    "host": "10.11.6.92",
+    "host": "10.11.6.83",
     "port": 1521,
     "service_name": "ngwifi",
     "user": "portal",
-    "password": "portal23",
-    "table": "USERST"
+    "password": "portal123",
+    "table": "USERST",
+    "thick_mode": true,
+    "lib_dir": "/usr/lib/oracle/21/client64/lib"
   },
   "mysql": {
     "host": "localhost",
