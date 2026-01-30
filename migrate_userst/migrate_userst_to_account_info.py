@@ -33,6 +33,8 @@ ORACLE_COLS = [
 def load_config(config_path=None):
     """从 JSON 配置文件和环境变量合并连接参数。"""
     path = config_path or DEFAULT_CONFIG_PATH
+    if not isinstance(path, Path):
+        path = Path(path)
     cfg = {}
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:

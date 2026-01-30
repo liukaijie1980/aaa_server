@@ -1,10 +1,10 @@
 {
   "oracle": {
-    "host": "oracle-host",
+    "host": "10.11.6.92",
     "port": 1521,
-    "service_name": "ORCL",
+    "service_name": "ngwifi",
     "user": "portal",
-    "password": "your-oracle-password",
+    "password": "portal23",
     "table": "USERST"
   },
   "mysql": {
@@ -12,7 +12,7 @@
     "port": 3306,
     "database": "radius",
     "user": "service_user",
-    "password": "your-mysql-password",
+    "password": "123456",
     "charset": "utf8mb4"
   }
 }

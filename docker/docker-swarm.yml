@@ -9,7 +9,7 @@ services:
       image: www.netgears.cn:4999/mariadb:ok
       volumes:
         - ./mariadb01/data:/var/lib/mysql
-        - ./mariadb01/etc/my.cnf:/etc/mysql/my.cnf
+        - ./mariadb01/etc/my.cnf:/etc/my.cnf
       ports:
         - "33061:3306"
       environment:
@@ -26,7 +26,7 @@ services:
       image: www.netgears.cn:4999/mariadb:ok
       volumes:
         - ./mariadb02/data:/var/lib/mysql
-        - ./mariadb02/etc/my.cnf:/etc/mysql/my.cnf
+        - ./mariadb02/etc/my.cnf:/etc/my.cnf
       ports:
         - "33062:3306"
       environment:
