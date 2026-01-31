@@ -58,9 +58,8 @@
     </div>
 
     <el-dialog :visible.sync="versionDialogVisible" title="版本信息">
-      <p>前端Git Version: {{ gitVersion }}</p>
-      <p>前端Commit Hash: {{ gitCommitHash }}</p>
-      <p>后端Git Version: {{ backendGitVersion }}</p>
+      <p>Git Version: {{ gitVersion }}</p>
+      <p>Commit Hash: {{ gitCommitHash }}</p>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="versionDialogVisible = false">确定</el-button>
@@ -81,7 +80,6 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import DbInformation from './globalDialog/DbInformation.vue'
 import Nas from './globalDialog/Nas.vue'
-import { getGit } from '@/api/backend-version'
 
 export default {
   components: {
@@ -108,7 +106,6 @@ export default {
       versionDialogVisible: false, // 对话框是否显示的状态
       gitVersion: process.env.GIT_VERSION,
       gitCommitHash: process.env.GIT_COMMIT_HASH,
-      backendGitVersion:'',
     }
   },
 
@@ -118,14 +115,7 @@ export default {
 
     // ...其他方法...
     showVersionInfo() {
-
-      getGit().then(Response  => {
-        console.log("Response",Response.data.data );  // Here you have your commit.id
-        this.backendGitVersion = Response.data.data.shortCommitId ;
-      });
-      
       this.versionDialogVisible = true;
-
     },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
