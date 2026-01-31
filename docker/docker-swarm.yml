@@ -10,6 +10,7 @@ services:
       volumes:
         - ./mariadb01/data:/var/lib/mysql
         - ./mariadb01/etc/my.cnf:/etc/my.cnf
+        - ./initdb:/docker-entrypoint-initdb.d
       ports:
         - "33061:3306"
       environment:
@@ -27,6 +28,7 @@ services:
       volumes:
         - ./mariadb02/data:/var/lib/mysql
         - ./mariadb02/etc/my.cnf:/etc/my.cnf
+        - ./initdb:/docker-entrypoint-initdb.d
       ports:
         - "33062:3306"
       environment:
@@ -40,12 +42,31 @@ services:
       networks:
          - my_network
 
- mysql:
+ # 双主复制自动配置：在 mysql01/mysql02 就绪后配置双主，完成后保持运行；MaxScale 依赖本服务并轮询复制状态后再启动
+ mysql_replication_init:
       depends_on:
         - mysql01
         - mysql02
+      image: www.netgears.cn:4999/mariadb:ok
+      command: ["bash", "/scripts/setup_dual_master_replication.sh"]
+      volumes:
+        - ./scripts:/scripts
+      deploy:
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+          delay: 10s
+      networks:
+        - my_network
 
+ mysql:
+      depends_on:
+        - mysql_replication_init
       image: www.netgears.cn:4999/maxscale:ok
+      environment:
+        MYSQL01_HOST: mysql01
+        MYSQL02_HOST: mysql02
+        MYSQL_ROOT_PASSWORD: "123456"
       ports:
         -  3306:3306
         -  8989:8989

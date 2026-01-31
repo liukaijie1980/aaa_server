@@ -8,6 +8,8 @@ COPY ./mariadb.repo /etc/yum.repos.d/
 COPY ./setsql.sh  /
 COPY ./run.sh /
 COPY ./docker-entrypoint.sh  /usr/bin/
-RUN dnf -y install MariaDB-client
-#ENTRYPOINT ["/docker-entrypoint.sh"]
-#CMD tail -f /dev/null
+COPY ./wait_for_replication.sh /
+RUN dnf -y install MariaDB-client && chmod +x /wait_for_replication.sh
+# Swarm 双主场景：ENTRYPOINT 等待 /shared/replication_ready 后再启动 MaxScale
+ENTRYPOINT ["/wait_for_replication.sh"]
+CMD ["/usr/bin/docker-entrypoint.sh"]
