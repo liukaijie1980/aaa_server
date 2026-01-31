@@ -93,6 +93,23 @@ services:
       networks:
          - my_network
 
+ # boss_bridge 镜像需先构建并推送: docker build -t www.netgears.cn:4999/boss-bridge:ok ../boss_bridge && docker push www.netgears.cn:4999/boss-bridge:ok
+ boss_bridge:
+      depends_on:
+        - backend
+      image: www.netgears.cn:4999/boss-bridge:ok
+      ports:
+        - "8090:8090"
+      environment:
+        RADIUS_API_URL: http://backend:8088
+        PORT: "8090"
+        ADMIN_USERNAME: admin
+        ADMIN_PASSWORD: admin
+      deploy:
+        mode: global
+      networks:
+         - my_network
+
  frontend: 
       depends_on:
        - backend

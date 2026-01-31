@@ -46,6 +46,22 @@ services:
         - "10368:8088"
       restart: always
 
+ boss_bridge:
+      depends_on:
+        - backend
+      build:
+        context: ../boss_bridge
+        dockerfile: Dockerfile
+      image: www.netgears.cn:4999/boss-bridge:ok
+      ports:
+        - "8090:8090"
+      environment:
+        RADIUS_API_URL: http://backend:8088
+        PORT: "8090"
+        ADMIN_USERNAME: admin
+        ADMIN_PASSWORD: admin
+      restart: always
+
  frontend: 
       depends_on:
        - backend

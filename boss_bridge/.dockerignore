@@ -1,0 +1,10 @@
+node_modules
+.env
+.env.*
+!.env.example
+*.log
+.git
+.gitignore
+test_client
+scripts
+README.md
