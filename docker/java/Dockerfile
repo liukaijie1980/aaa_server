@@ -9,5 +9,6 @@ RUN rm -f /etc/localtime \
 # Eclipse Temurin 镜像已包含 JDK 19，无需安装
 
 COPY ./docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD tail -f /dev/null
