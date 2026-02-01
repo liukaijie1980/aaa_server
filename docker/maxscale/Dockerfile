@@ -13,3 +13,4 @@ COPY ./mariadb.repo /etc/yum.repos.d/
 # Swarm 双主场景：ENTRYPOINT 等待 /shared/replication_ready 后再启动 MaxScale
 ENTRYPOINT ["/wait_for_replication.sh"]
 CMD ["/usr/bin/docker-entrypoint.sh"]
+

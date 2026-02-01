@@ -51,7 +51,7 @@ services:
       depends_on:
         - backend
       build:
-        context: ../boss_bridge
+        context: ./boss_bridge
         dockerfile: Dockerfile
       image: www.netgears.cn:4999/boss-bridge:ok
       ports:
@@ -60,7 +60,7 @@ services:
         RADIUS_API_URL: http://backend:8088
         PORT: "8090"
         ADMIN_USERNAME: admin
-        ADMIN_PASSWORD: admin
+        ADMIN_PASSWORD: 123456
       restart: always
 
  frontend: 

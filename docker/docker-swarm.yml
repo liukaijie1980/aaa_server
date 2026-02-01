@@ -125,7 +125,7 @@ services:
         RADIUS_API_URL: http://backend:8088
         PORT: "8090"
         ADMIN_USERNAME: admin
-        ADMIN_PASSWORD: admin
+        ADMIN_PASSWORD: 123456
       deploy:
         mode: global
       networks:
